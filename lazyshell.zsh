@@ -19,15 +19,6 @@ __lzsh_get_os_prompt_injection() {
 
 __lzsh_preflight_check() {
   emulate -L zsh
-  if [ -z "$OPENAI_API_KEY" ]; then
-    echo ""
-    echo "Error: OPENAI_API_KEY is not set"
-    echo "Get your API key from https://platform.openai.com/account/api-keys and then run:"
-    echo "export OPENAI_API_KEY=<your API key>"
-    zle reset-prompt
-    return 1
-  fi
-
   if ! command -v jq &> /dev/null; then
     echo ""
     echo "Error: jq is not installed"
@@ -45,7 +36,7 @@ __lzsh_preflight_check() {
 
 __lzsh_llm_api_call() {
   emulate -L zsh
-  # calls the llm API, shows a nice spinner while it's running 
+  # calls the llm API, shows a nice spinner while it's running
   # called without a subshell to stay in the widget context, returns the answer in $generated_text variable
   local intro="$1"
   local prompt="$2"
@@ -164,12 +155,6 @@ __lazyshell_explain() {
   zle -R "# $generated_text"
   read -k 1
 }
-
-if [ -z "$OPENAI_API_KEY" ]; then
-  echo "Warning: OPENAI_API_KEY is not set"
-  echo "Get your API key from https://platform.openai.com/account/api-keys and then run:"
-  echo "export OPENAI_API_KEY=<your API key>"
-fi
 
 # Bind the __lazyshell_complete function to the Alt-g hotkey
 # Bind the __lazyshell_explain function to the Alt-e hotkey
